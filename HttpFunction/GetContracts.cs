@@ -15,7 +15,7 @@ namespace HttpFunction
             };
 
             var periodicalsResponse = await RequestForwarder.AuxbrainRequest<PeriodicalsResponse>(Endpoint, firstContactRequest);
-            await response.WriteAsync(periodicalsResponse.Periodicals.Contracts.ToJSON());
+            await response.WriteAsync(periodicalsResponse.Periodicals.Contracts.Contracts.ToJSON());
         }
     }
 }
