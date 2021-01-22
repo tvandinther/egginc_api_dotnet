@@ -16,7 +16,7 @@ namespace HttpFunction
             response.Headers.Append("Access-Control-Allow-Origin", "*");
             if (HttpMethods.IsOptions(request.Method))
             {
-                response.Headers.Append("Access-Control-Allow-Methods", "GET");
+                response.Headers.Append("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
                 response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
                 response.Headers.Append("Access-Control-Max-Age", "3600");
                 response.StatusCode = (int) HttpStatusCode.NoContent;
@@ -40,9 +40,19 @@ namespace HttpFunction
                     await GetContracts.Handle(request, response);
                     break;
                 }
+                case "/get_periodicals":
+                {
+                    await GetPeriodicals.Handle(request, response);
+                    break;
+                }
+                case "/get_coop_status":
+                {
+                    await GetCoopStatus.Handle(request, response);
+                    break;
+                }
                 default:
                 {
-                    response.StatusCode = 404;
+                    response.StatusCode = (int) HttpStatusCode.NotFound;
                     break;
                 }
             }
