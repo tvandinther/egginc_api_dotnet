@@ -5,6 +5,8 @@ namespace HttpFunction
 {
     public class GetContracts
     {
+        private const string Endpoint = "get_periodicals";
+        
         public static async Task Handle(HttpRequest request, HttpResponse response)
         {
             var firstContactRequest = new PeriodicalsRequest
@@ -12,7 +14,7 @@ namespace HttpFunction
                 ClientVersion = Globals.ClientVersion,
             };
 
-            var periodicalsResponse = await RequestForwarder.AuxbrainRequest<PeriodicalsResponse>("get_periodicals", firstContactRequest);
+            var periodicalsResponse = await RequestForwarder.AuxbrainRequest<PeriodicalsResponse>(Endpoint, firstContactRequest);
             await response.WriteAsync(periodicalsResponse.Periodicals.Contracts.ToJSON());
         }
     }

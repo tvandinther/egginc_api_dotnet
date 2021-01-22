@@ -6,6 +6,8 @@ namespace HttpFunction
 {
     public class GetBackupLegacy
     {
+        private const string Endpoint = "first_contact";
+        
         public static async Task Handle(HttpRequest request, HttpResponse response)
         {
             var body = new StreamReader(request.Body);
@@ -18,7 +20,7 @@ namespace HttpFunction
                 GameServicesId = requestString
             };
 
-            var firstContactResponse = await RequestForwarder.AuxbrainRequest<FirstContactResponse>("first_contact", firstContactRequest);
+            var firstContactResponse = await RequestForwarder.AuxbrainRequest<FirstContactResponse>(Endpoint, firstContactRequest);
             await response.WriteAsync(firstContactResponse.FirstContact.Backup.ToJSON());
         }
     }
