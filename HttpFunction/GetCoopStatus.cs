@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
@@ -21,8 +23,17 @@ namespace HttpFunction
                 CoopId = collection.Get("coopId")
             };
 
-            var coopStatusResponse = await RequestForwarder.AuxbrainRequest<CoopStatusResponse>(Endpoint, coopStatusRequest);
-            await response.WriteAsync(coopStatusResponse.CoopStatus.ToJson());
+            try
+            {
+                var coopStatusResponse = await RequestForwarder.AuxbrainRequest<CoopStatusResponse>(Endpoint, coopStatusRequest);
+                await response.WriteAsync(coopStatusResponse.CoopStatus.ToJson());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                await response.WriteAsync(e.ToJson());
+            }
         }
     }
 }

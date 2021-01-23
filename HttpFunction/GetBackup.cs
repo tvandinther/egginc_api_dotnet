@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
@@ -21,9 +23,17 @@ namespace HttpFunction
                 DeviceId = Globals.DeviceId,
                 EiUserId = collection.Get("id")
             };
-
-            var firstContactResponse = await RequestForwarder.AuxbrainRequest<FirstContactResponse>(Endpoint, firstContactRequest);
-            await response.WriteAsync(firstContactResponse.FirstContact.Backup.ToJson());
+            try
+            {
+                var firstContactResponse = await RequestForwarder.AuxbrainRequest<FirstContactResponse>(Endpoint, firstContactRequest);
+                await response.WriteAsync(firstContactResponse.FirstContact.Backup.ToJson());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                response.StatusCode = (int) HttpStatusCode.BadRequest;
+                await response.WriteAsync(e.ToJson());
+            }
         }
     }
 }
