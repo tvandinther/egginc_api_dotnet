@@ -2,12 +2,10 @@
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HttpFunction
 {
-    public class GetCoopStatus
+    public static class GetCoopStatus
     {
         private const string Endpoint = "coop_status";
         
@@ -24,13 +22,7 @@ namespace HttpFunction
             };
 
             var coopStatusResponse = await RequestForwarder.AuxbrainRequest<CoopStatusResponse>(Endpoint, coopStatusRequest);
-            await response.WriteAsync(coopStatusResponse.CoopStatus.ToJSON());
+            await response.WriteAsync(coopStatusResponse.CoopStatus.ToJson());
         }
-    }
-
-    class CoopStatusRequestJson
-    {
-        public string ContractId;
-        public string CoopId;
     }
 }

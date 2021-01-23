@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace HttpFunction
 {
-    public class GetContracts
+    public static class GetContracts
     {
         private const string Endpoint = "get_periodicals";
         
@@ -15,7 +15,7 @@ namespace HttpFunction
             };
 
             var periodicalsResponse = await RequestForwarder.AuxbrainRequest<PeriodicalsResponse>(Endpoint, firstContactRequest);
-            await response.WriteAsync(periodicalsResponse.Periodicals.Contracts.Contracts.ToJSON());
+            await response.WriteAsync(periodicalsResponse.Periodicals.Contracts.Contracts.ToJson());
         }
     }
 }
