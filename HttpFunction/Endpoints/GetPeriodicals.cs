@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace HttpFunction
+namespace HttpFunction.Endpoints
 {
-    public static class GetContracts
+    public static class GetPeriodicals
     {
         private const string Endpoint = "get_periodicals";
         
@@ -15,7 +15,7 @@ namespace HttpFunction
             };
 
             var periodicalsResponse = await RequestForwarder.AuxbrainRequest<PeriodicalsResponse>(Endpoint, firstContactRequest);
-            await response.WriteAsync(periodicalsResponse.Periodicals.Contracts.Contracts.ToJson());
+            await response.WriteAsync(periodicalsResponse.Periodicals.ToJson());
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using HttpFunction.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace HttpFunction
+namespace HttpFunction.Endpoints
 {
     public static class GetCoopStatus
     {
@@ -18,10 +17,18 @@ namespace HttpFunction
             var requestString = await body.ReadToEndAsync();
             var collection = HttpUtility.ParseQueryString(requestString);
 
+            var contractId = collection.Get("contractId");
+            var coopId = collection.Get("coopId");
+
+            if (contractId is null || coopId is null)
+            {
+                throw new BadRequestException();
+            }
+            
             var coopStatusRequest = new CoopStatusRequest{
                 ClientVersion = Globals.ClientVersion,
-                ContractId = collection.Get("contractId"),
-                CoopId = collection.Get("coopId")
+                ContractId = contractId,
+                CoopId = coopId
             };
 
             try
@@ -31,8 +38,7 @@ namespace HttpFunction
             }
             catch (HttpRequestException)
             {
-                response.StatusCode = (int) HttpStatusCode.NotFound;
-                await response.CompleteAsync();
+                throw new NotFoundException();
             }
         }
     }

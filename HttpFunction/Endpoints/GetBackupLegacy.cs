@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
+﻿using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using HttpFunction.Exceptions;
 using Microsoft.AspNetCore.Http;
 
-namespace HttpFunction
+namespace HttpFunction.Endpoints
 {
     public static class GetBackupLegacy
     {
@@ -32,8 +31,7 @@ namespace HttpFunction
             }
             catch (HttpRequestException)
             {
-                response.StatusCode = (int) HttpStatusCode.NotFound;
-                await response.CompleteAsync();
+                throw new NotFoundException();
             }
         }
     }
