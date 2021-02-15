@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Http;
@@ -29,11 +30,10 @@ namespace HttpFunction
                 var firstContactResponse = await RequestForwarder.AuxbrainRequest<FirstContactResponse>(Endpoint, firstContactRequest);
                 await response.WriteAsync(firstContactResponse.FirstContact.Backup.ToJson());
             }
-            catch (Exception e)
+            catch (HttpRequestException)
             {
-                Console.WriteLine(e);
-                response.StatusCode = (int) HttpStatusCode.BadRequest;
-                await response.WriteAsync(e.ToJson());
+                response.StatusCode = (int) HttpStatusCode.NotFound;
+                await response.CompleteAsync();
             }
         }
     }
