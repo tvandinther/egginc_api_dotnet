@@ -27,7 +27,15 @@ namespace HttpFunction.Endpoints
             try
             {
                 var firstContactResponse = await RequestForwarder.AuxbrainRequest<FirstContactResponse>(Endpoint, firstContactRequest);
-                await response.WriteAsync(firstContactResponse.FirstContact.Backup.ToJson());
+                var backup = firstContactResponse?.FirstContact?.Backup;
+                
+                if (backup is null)
+                {
+                    throw new NotFoundException();
+                    
+                }
+                
+                await response.WriteAsync(backup.ToJson());
             }
             catch (HttpRequestException)
             {
