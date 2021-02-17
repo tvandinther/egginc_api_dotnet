@@ -12,6 +12,7 @@ namespace HttpFunction.Endpoints
             var firstContactRequest = new PeriodicalsRequest
             {
                 ClientVersion = Globals.ClientVersion,
+                UserId = Globals.UserId,
             };
 
             var periodicalsResponse = await RequestForwarder.AuxbrainRequest<PeriodicalsResponse>(Endpoint, firstContactRequest);

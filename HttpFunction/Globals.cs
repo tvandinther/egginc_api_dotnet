@@ -6,11 +6,13 @@ namespace HttpFunction
     {
         public static readonly uint ClientVersion;
         public static readonly string DeviceId;
+        public static readonly string UserId;
 
         static Globals()
         {
             var clientVersion = Environment.GetEnvironmentVariable("CLIENT_VERSION");
             var deviceId = Environment.GetEnvironmentVariable("DEVICE_ID");
+            var userId = Environment.GetEnvironmentVariable("USER_ID");
 
             if (clientVersion is null && deviceId is null)
             {
@@ -27,6 +29,7 @@ namespace HttpFunction
             
             ClientVersion = uint.Parse(clientVersion);
             DeviceId = deviceId;
+            UserId = userId;
         }
     }
 }
